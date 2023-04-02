@@ -33,11 +33,14 @@ public class Dream{
     @Column(name = "energy_level", nullable = false)
     private int energy_level;
 
-    @Column(name = "user_id", nullable = false)
-    private int user_id;
+    @Column(name = "uid", nullable = false)
+    private int uid;
 
     @Column(name = "description", nullable = false)
     private String dreamDescription;
+
+    @Column(name = "category", nullable = false)
+    private String dreamCategory;
 
     @Override
     public String toString() {
@@ -47,8 +50,9 @@ public class Dream{
                 ", duration=" + duration +
                 ", stress_level=" + stress_level +
                 ", energy_level=" + energy_level +
-                ", user_id=" + user_id +
+                ", uid=" + uid +
                 ", dreamDescription='" + dreamDescription + '\'' +
+                ", dreamCategory='" + dreamCategory + '\'' +
                 '}';
     }
 }

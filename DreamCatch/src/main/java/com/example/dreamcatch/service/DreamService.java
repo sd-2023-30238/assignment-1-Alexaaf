@@ -14,7 +14,7 @@ public class DreamService {
     public List<Dream> findAll(){return dreamRepository.findAll();}
     public Dream saveDream(Dream dream){return  dreamRepository.save(dream);}
 
-    public List<Dream> findDreamsByDateAfter(String s) {
-        return dreamRepository.findDreamsByDateAfter(s);
+    public List<Dream> findDreamsByDateAfterAndUser_id(String s,int id) {
+        return dreamRepository.findDreamsByDateAfterAndUid(s,id);
     }
 }

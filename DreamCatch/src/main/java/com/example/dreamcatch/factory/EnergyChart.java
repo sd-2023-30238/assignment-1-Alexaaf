@@ -6,25 +6,33 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class EnergyChart implements Chart{
-    @Override
-    public List<Integer> generate(DreamService service) {
-        Date currentDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-        String dateString = formatter.format(currentDate);
-        List<Integer> data = new ArrayList<>();
-        List<Dream> dreams = service.findDreamsByDateAfter("20/03/2023");
-        for(int i = 0; i < dreams.size();i++)
-        {
-            data.add(dreams.get(i).getEnergy_level() * 20);
-        }
-        System.out.println(data);
-        System.out.println(dreams);
 
-        return data;
+    @Override
+    public List<Results> generate(DreamService service, int userId) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -7);
+        Date searchDate = cal.getTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy");
+        String dateString = formatter.format(searchDate) ;
+
+        System.out.println(dateString);
+        List<Dream> dreams = service.findDreamsByDateAfterAndUser_id(dateString,userId);
+        List<Results> results = new ArrayList<>();
+        for(Dream d: dreams)
+        {
+            Results result = new Results(d.getEnergy_level(),d.getDate());
+            results.add(result);
+        }
+
+        return results;
     }
 }
