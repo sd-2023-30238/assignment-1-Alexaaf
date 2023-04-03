@@ -64,7 +64,7 @@ public class DreamController {
             return "Invalid data";
 
         System.out.println(duration + "- duration, " + energy + "- energy, " + stress + "- Stress.");
-        Dream newDream = new Dream(0L,dateString,duration,stress,energy,sleepDescription.getUid(),sleepDescription.getDreamDescription(),category);
+        Dream newDream = new Dream(0L,currentDate,duration,stress,energy,sleepDescription.getUid(),sleepDescription.getDreamDescription(),category);
         dreamService.saveDream(newDream);
         System.out.println(newDream.toString());
         return "New dream recorded";
@@ -81,7 +81,13 @@ public class DreamController {
         chart = generator.generateChart(decomp[0]);
         int userId = Integer.parseInt(decomp[1]);
         System.out.println(userId);
-        List<Results> data = chart.generate(dreamService,userId);
+        List<Results> data = new ArrayList<>();
+        try {
+            data = chart.generate(dreamService,userId);
+        }catch (Exception e)
+        {
+            System.out.println(e.toString());
+        }
 
         return data;
     }

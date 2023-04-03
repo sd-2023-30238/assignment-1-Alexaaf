@@ -22,7 +22,7 @@ public class Dream{
     private Long id;
 
     @Column(name = "date", nullable = false, unique = false)
-    private String date;
+    private Date date;
 
     @Column(name = "duration", nullable = false)
     private int duration;

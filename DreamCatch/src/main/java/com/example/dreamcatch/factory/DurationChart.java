@@ -26,11 +26,12 @@ public class DurationChart implements Chart{
         String dateString = formatter.format(searchDate) ;
 
         System.out.println(dateString);
-        List<Dream> dreams = service.findDreamsByDateAfterAndUser_id(dateString,id);
+        List<Dream> dreams = service.findDreamsByDateAfterAndUser_id(searchDate,id);
         List<Results> results = new ArrayList<>();
         for(Dream d: dreams)
         {
-            Results result = new Results(d.getDuration(),d.getDate());
+            String dateStr = formatter.format(d.getDate());
+            Results result = new Results(d.getDuration(),dateStr);
             results.add(result);
         }
 

@@ -25,11 +25,12 @@ public class EnergyChart implements Chart{
         String dateString = formatter.format(searchDate) ;
 
         System.out.println(dateString);
-        List<Dream> dreams = service.findDreamsByDateAfterAndUser_id(dateString,userId);
+        List<Dream> dreams = service.findDreamsByDateAfterAndUser_id(searchDate,userId);
         List<Results> results = new ArrayList<>();
         for(Dream d: dreams)
         {
-            Results result = new Results(d.getEnergy_level(),d.getDate());
+            String dateStr = formatter.format(d.getDate());
+            Results result = new Results(d.getEnergy_level(),dateStr);
             results.add(result);
         }
 
