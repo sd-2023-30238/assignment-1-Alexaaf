@@ -10,6 +10,6 @@ public interface DreamRepository extends JpaRepository<Dream, Long> {
     @Override
     Dream save(Dream dream);
 
+    List<Dream> findDreamsByDateBetweenAndAndUid(Date date1,Date date2,int uid);
     List<Dream> findDreamsByDateAfterAndUid(Date date, int uid);
-
 }

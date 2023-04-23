@@ -5,9 +5,12 @@ import com.example.dreamcatch.factory.ChartGenerator;
 import com.example.dreamcatch.factory.Results;
 import com.example.dreamcatch.model.Dream;
 import com.example.dreamcatch.service.DreamService;
+import com.example.dreamcatch.strategy.MonthlyChart;
+import com.example.dreamcatch.strategy.WeeklyChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,8 +35,6 @@ public class DreamController {
     @PostMapping(value = "/addDream")
     public String addDream(@RequestBody Dream sleepDescription)
     {
-        //Date today = new Date(String.valueOf(java.time.LocalDate.now()));
-        //String[] dreamRaw = sleepDescription.split(" ");
         System.out.println(sleepDescription);
         String[] dreamRaw = sleepDescription.getDreamDescription().split(" ");
         int stress = 0, duration = 0, energy = 0;
@@ -71,19 +72,42 @@ public class DreamController {
     }
 
     @PostMapping(value = "/chart")
-    public List<Results> showChart(@RequestBody String type)
-    {
-        //get last 7 days
+    public List<Results> showChart(@RequestBody String type) throws ParseException {
+        System.out.println(type);
+        int month = -1;
+        int userId = 0;
+        List<Results> data = new ArrayList<>();
         String[] decomp = type.split(" ");
         System.out.println(type);
+        userId = Integer.parseInt(decomp[1]);
+        month = Integer.parseInt(decomp[2]);
+        String startDateString = decomp[3];
+        String endDateString = decomp[4];
+
+        Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDateString);
+        Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDateString);
+
+        if(userId < 0)
+            return data;
+        if(month < 0 || month > 12)
+            return data;
+
         ChartGenerator generator = new ChartGenerator();
         Chart chart;
         chart = generator.generateChart(decomp[0]);
-        int userId = Integer.parseInt(decomp[1]);
+
+        System.out.println("Month: " + month);
+
+        if(month == 0) {
+            chart.setStrategy(new WeeklyChart(startDate,endDate,userId));
+        }
+        else {
+            chart.setStrategy(new MonthlyChart(month,userId));
+        }
+
         System.out.println(userId);
-        List<Results> data = new ArrayList<>();
         try {
-            data = chart.generate(dreamService,userId);
+            data = chart.generate(dreamService);
         }catch (Exception e)
         {
             System.out.println(e.toString());

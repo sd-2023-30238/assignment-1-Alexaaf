@@ -1,11 +1,14 @@
 package com.example.dreamcatch.factory;
 
-import com.example.dreamcatch.model.Dream;
 import com.example.dreamcatch.service.DreamService;
+import com.example.dreamcatch.strategy.ChartStrategy;
 
 import java.text.ParseException;
 import java.util.List;
 
+
 public interface Chart {
-    List<Results> generate(DreamService service, int userId) throws ParseException;
+    public ChartStrategy getStrategy();
+    public void setStrategy(ChartStrategy strategy);
+    List<Results> generate(DreamService service) throws ParseException;
 }
