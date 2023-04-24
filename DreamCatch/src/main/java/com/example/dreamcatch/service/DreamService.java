@@ -18,8 +18,4 @@ public class DreamService {
     public List<Dream> findDreamsByDateAfterAndUser_id(Date s, int id) {
         return dreamRepository.findDreamsByDateAfterAndUid(s,id);
     }
-
-    public List<Dream> findDreamsByDateBetweenAndUid(Date date1, Date date2, int uid){
-        return dreamRepository.findDreamsByDateBetweenAndAndUid(date1,date2,uid);
-    }
 }
